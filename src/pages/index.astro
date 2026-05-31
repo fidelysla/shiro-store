@@ -1,17 +1,68 @@
 ---
+// 1. Importamos el Layout que configuramos antes
+import Layout from '../layouts/Layout.astro';
+// 2. Importamos nuestros productos falsos
+import { products } from '../data/products';
 
+import AddToCartButton from '../components/react/AddToCardButton';
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+<Layout title="Catálogo | Shiro Store">
+	
+	<!-- Encabezado de la página -->
+	<header class="mb-10 text-center md:text-left">
+		<h1 class="text-4xl font-bold mb-2">Nuevos Ingresos</h1>
+		<p class="text-base-content/70">Descubre nuestros productos destacados.</p>
+	</header>
+
+	<!-- Grilla de Productos (Responsive: 1 columna en móvil, hasta 4 en PC) -->
+	<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+		
+		{/* Magia de Astro: Hacemos un "map" para recorrer nuestros productos y crear una tarjeta por cada uno */}
+		{products.map((product) => (
+			
+			/* Tarjeta de DaisyUI */
+			<div class="card bg-base-100 shadow-sm border border-base-200 hover:shadow-lg transition-shadow duration-300">
+				
+				{/* <!-- Imagen del producto --> */}
+				<figure class="p-4 pb-0">
+					<!-- aspect-square obliga a la imagen a ser cuadrada para que el catálogo se vea ordenado -->
+					<img 
+						src={product.image} 
+						alt={product.name} 
+						class="rounded-xl object-cover aspect-square w-full"
+						loading="lazy" 
+					/>
+				</figure>
+				
+				<!-- Contenido de la tarjeta -->
+				<div class="card-body p-5">
+					<!-- Título -->
+					<h2 class="card-title text-base leading-tight mb-1">{product.name}</h2>
+					<!-- Precio -->
+					<p class="text-xl font-bold mt-0">${product.price}</p>
+					
+					<!-- Botones -->
+					<div class="card-actions mt-4 w-full">
+
+						<AddToCartButton 
+							client:load 
+							id={product.id}
+							name={product.name}
+							price={product.price}
+							image={product.image}
+						/>
+
+						<!-- En el futuro, esto llevará a la página individual del producto -->
+						<a href={`/producto/${product.id}`} class="btn btn-outline btn-block">
+							Ver Detalles
+						</a>
+					</div>
+				</div>
+
+			</div>
+		))}
+
+	</div>
+
+</Layout>

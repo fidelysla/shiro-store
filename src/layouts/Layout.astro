@@ -1,0 +1,49 @@
+---
+// Importamos el CSS global que tiene Tailwind y DaisyUI
+import '../styles/global.css';
+// Importamos el enrutador del cliente (Magia de View Transitions)
+import { ClientRouter } from 'astro:transitions';
+
+// 1. Importamos nuestros nuevos componentes
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+
+// TypeScript para definir que el Layout siempre recibe un "title"
+interface Props {
+	title: string;
+}
+
+const { title } = Astro.props;
+---
+
+<!doctype html>
+<!-- data-theme="lofi" le dice a DaisyUI que use el tema moderno y minimalista -->
+<html lang="es" data-theme="lofi">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="description" content="Mi E-commerce Catálogo" />
+		<meta name="viewport" content="width=device-width" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<title>{title}</title>
+		
+		<!-- Activa la navegación rápida y sin recargas de página -->
+		<ClientRouter />
+	</head>
+	
+	<!-- min-h-screen asegura que la web ocupe siempre al menos el 100% del alto -->
+	<body class="min-h-screen bg-base-100 text-base-content flex flex-col">
+		
+		<!-- El Header y el Carrito irán aquí pronto -->
+        <Header/>
+
+		<!-- main es donde se inyectará el contenido de las demás páginas -->
+		<main class="container mx-auto px-4 py-8 grow">
+			<slot />
+		</main>
+
+		<!-- El Footer irá aquí pronto -->
+        <Footer/>
+
+        
+	</body>
+</html>
